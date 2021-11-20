@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 
 const rowStyle = {
   display: 'flex'
@@ -44,14 +43,19 @@ const squareStyle = {
 class Square extends React.Component {
   
   clickSquare() {
+    let board = this.props.board
+
     if( board[this.props.index] !== "")
       return
+
+    if( this.props.player_now === "" )
+      return
+
     let next_player = this.props.player_now
-    let player_now = (this.props.player_now === "X" ? "0" : "X")
-    let board = this.props.board
+    let player_now = (this.props.player_now === "X" ? "0" : "X")  
+
     board[this.props.index] = player_now
     this.props.playerCallback(player_now, next_player);
-    this.value = player_now
     
     let winning = [
       [0,1,2],
@@ -72,6 +76,7 @@ class Square extends React.Component {
       
       if(board[p1] !== "" && board[p1] === board[p2] && board[p2] === board[p3] && board[p3] === board[p1]) {
         this.props.winnerCallback(`Winner! The player ${player_now} won`)
+        this.props.playerCallback("", "");
       }
     }
     
